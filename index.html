@@ -1,1 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔥 APK Download Hub</title>
+<link rel="stylesheet" href="style.css">
 
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+<script src="firebase-config.js"></script>
+</head>
+<body>
+<header>
+  <h1>🔥 APK Download Hub</h1>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="subpages/admin.html">Admin</a>
+  <a href="subpages/about.html">About</a>
+</nav>
+
+<main>
+  <h2>Latest APKs</h2>
+  <div class="apk-list" id="apkList"></div>
+</main>
+
+<script>
+const apkList = document.getElementById('apkList');
+
+db.collection('apks').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+  apkList.innerHTML = "";
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    const div = document.createElement('div');
+    div.className = "apk-item";
+    div.innerHTML = `
+      <img src="${data.iconURL}" alt="${data.name}">
+      <h3>${data.name}</h3>
+      <a href="download.html?apkURL=${encodeURIComponent(data.apkURL)}" class="download-btn">Download</a>
+    `;
+    apkList.appendChild(div);
+  });
+});
+</script>
+</body>
+</html>
